@@ -1,7 +1,8 @@
 import datetime
 import time
 import streamlit as st
-from playsound import playsound
+from pydub import AudioSegment
+from pydub.playback import play
 
 
 def set_alarm(alarm_time, sound_file):
@@ -22,7 +23,11 @@ def set_alarm(alarm_time, sound_file):
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         if current_time == alarm_time_str:
             st.warning("Wake up! It's time!")
-            playsound(sound_file)  # Play the sound using playsound
+            try:
+                sound = AudioSegment.from_file(sound_file)
+                play(sound)
+            except Exception as e:
+                st.error(f"Error playing sound: {e}")
             break
         time.sleep(1)
 
@@ -37,3 +42,4 @@ if __name__ == "__main__":
 
     st.markdown("---")
     st.text("Made by S. Farzana Shah")
+
