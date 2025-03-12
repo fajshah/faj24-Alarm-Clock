@@ -1,9 +1,10 @@
 import datetime
 import time
 import streamlit as st
+from playsound import playsound
 
 
-def set_alarm(alarm_time):
+def set_alarm(alarm_time, sound_file):
     try:
         # Handle both 12-hour and 24-hour formats
         if "AM" in alarm_time.upper() or "PM" in alarm_time.upper():
@@ -21,7 +22,7 @@ def set_alarm(alarm_time):
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         if current_time == alarm_time_str:
             st.warning("Wake up! It's time!")
-            st.audio("/path/to/your/alarm.mp3")  # Replace with your file path
+            playsound(sound_file)  # Play the sound using playsound
             break
         time.sleep(1)
 
@@ -29,10 +30,10 @@ def set_alarm(alarm_time):
 if __name__ == "__main__":
     st.title("⏰ Alarm Clock with Sound")
     alarm_time = st.text_input("Enter the alarm time (e.g., HH:MM:SS or HH:MM AM/PM):")
+    sound_file = st.text_input("Enter the path to your alarm sound file (e.g., C:/path/to/your/alarm.mp3):")
 
-    if st.button("Set Alarm") and alarm_time:
-        set_alarm(alarm_time)
+    if st.button("Set Alarm") and alarm_time and sound_file:
+        set_alarm(alarm_time, sound_file)
 
     st.markdown("---")
     st.text("Made by S. Farzana Shah")
-
